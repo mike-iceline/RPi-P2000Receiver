@@ -121,3 +121,7 @@ To get messages in a JSON format, http://IP-ADDRESS:8000/api/messages request ca
 To get messages via websocket, use ws://IP-ADDRESS:8001 (see index.html for details).
 
 To post data to a 3rd-party server, "postToServer" method should be uncommented in 'p2000.py'. 
+
+# Get the dutch index version (optional)
+
+Go to the /http/ folder and rename index.html to index_us.html and rename index_nl.html to index.html to get the dutch version of the P2000 Messages webpage.
