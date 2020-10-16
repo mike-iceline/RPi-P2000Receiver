@@ -258,28 +258,6 @@ class UIConsoleView(object):
     def updateUI(self):
         pass
 
-        # global messages
-        # print("\x1b[2J")  # Clear console
-        # max_cnt = 10
-        # print("\x1b[0;0H" + '\x1b[1m' + "Last {} messages\n".format(max_cnt) + '\x1b[0m') # Cursor to 0,0
-        # for idx, msg in enumerate(messages):
-        #     # Header and time
-        #     print('\x1b[1;37m' + "{}".format(msg.timestamp) + '\x1b[0m') # Grey
-        #     # Group and receivers
-        #     print("To: {}".format(msg.groupid, msg.receivers))
-        #     # Body
-        #     msg_color = '\x1b[1;30m' # Black
-        #     if msg.priority == PRIORITY1:
-        #         msg_color = '\x1b[1;32m' # Green
-        #     elif msg.priority == PRIORITY2:
-        #         msg_color = '\x1b[1;34m' # Blue
-        #     elif msg.priority == PRIORITY3 or msg.priority == PRIORITY4:
-        #         msg_color = '\x1b[1;31m' # Red
-        #     print(msg_color + msg.body + '\x1b[0m')
-        #     print("")
-        #
-        #     if idx >= max_cnt: break
-
     def mainloop(self):
         while True:
             try:
@@ -595,16 +573,12 @@ if __name__ == "__main__":
                 multimon_ng.poll()
                 if line.startswith('FLEX'):
                     if line.__contains__("ALN"):
-                        # Parsing based on
-                        # https://nl.oneguyoneblog.com/2016/08/09/p2000-ontvangen-decoderen-raspberry-pi/
-                        # Message sample:
-                        # FLEX: 2018-07-29 11:43:27 1600/2/K/A 10.120 [001523172] ALN A1 Boerhaavelaan HAARLM : 16172
-                        line_data = line.split(' ')
-                        flex = line[0:5]
-                        timestamp = line_data[1] + " " + line_data[2]
-                        message = line[line.find("ALN")+4:].strip()
-                        groupid = line_data[4].strip()
-                        capcode = line_data[5].replace('[', '').replace(']', '') # line[43:52].strip()
+                        line_data = line.split('|')
+                        flex = line_data[0]
+                        timestamp = line_data[1]
+                        message = line_data[6]
+                        groupid = line_data[3].strip()
+                        capcode = line_data[4]
                         
                         # Apply filter
                         if checkFilter(capcode) is False:
