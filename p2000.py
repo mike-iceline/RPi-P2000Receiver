@@ -57,6 +57,8 @@ SENDER_UNKNOWN = 0
 SENDER_BRAND = 1
 SENDER_POLICE = 2
 SENDER_AMBU = 3
+SENDER_LFL = 4
+SENDER_KNRM = 5
 SENDER_TEST = 16
 SENDER_POCSAG = 64
 SENDER_POCSAG_ALPHA = 65
@@ -74,7 +76,8 @@ is_active = False
 capcodes_police = set()
 capcodes_fire = set()
 capcodes_ambu = set()
-
+capcodes_lfl = set()
+capcodes_knrm = set()
 
 class MessageItem(object):
     __slots__ = ['timestamp', 'timereceived', 'groupid', 'receivers', 'capcodes', 'body', 'priority', 'sender', 'is_posted']
@@ -472,7 +475,7 @@ def checkFilter(capcode):
     return False
 
 def getSender(capcode, message):
-    global capcodes_police, capcodes_fire, capcodes_ambu
+    global capcodes_police, capcodes_fire, capcodes_ambu, capcodes_lfl, capcodes_knrm
     # Check from capcodes list
     if capcode in capcodes_police:
         return SENDER_POLICE
@@ -480,9 +483,12 @@ def getSender(capcode, message):
         return SENDER_BRAND
     if capcode in capcodes_ambu:
         return SENDER_AMBU
+    if capcode in capcodes_lfl:
+        return SENDER_LFL
+    if capcode in capcodes_knrm:
+        retrun SENDER_KNRM
 
     # Try to analyse the text
-
 
     return SENDER_UNKNOWN
 
@@ -535,6 +541,8 @@ if __name__ == "__main__":
     capcodes_police = loadCapcodesSet(dir_path + os.sep + "cc_police.txt")
     capcodes_fire = loadCapcodesSet(dir_path + os.sep + "cc_fire.txt")
     capcodes_ambu = loadCapcodesSet(dir_path + os.sep + "cc_ambu.txt")
+    capcodes_lfl = loadCapcodesSet(dir_path + os.sep + "cc_lifeliner.txt")
+    capcodes_knrm = loadCapcodesSet(dir_path + os.sep + "cc_knrm.txt")
 
     # Debug=True - without receiver, for simulation: gcc debugtest.c -odebugtest)
     # if utils.isRaspberryPi() is False:
